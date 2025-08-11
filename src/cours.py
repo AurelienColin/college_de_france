@@ -14,7 +14,7 @@ from src.utils import get_soup
 @dataclass
 class Cours:
     url: typing.Optional[str] = None
-    _medial_url : typing.Optional[str] = None
+    _medial_url: typing.Optional[str] = None
     _time: typing.Optional[datetime.datetime] = None
 
     _name: typing.Optional[str] = None
@@ -48,7 +48,6 @@ class Cours:
         first_datetime_node = self.soup.find('time')
         return datetime.datetime.fromisoformat(first_datetime_node.get('datetime'))
 
-
     @LazyProperty
     def name(self) -> str:
         return self.system_breadcrumbs.find_all('li')[-1].text.strip()
@@ -74,7 +73,9 @@ class Cours:
                 media_url = query_params['url'][0]
 
         if not media_url:
-            audio_link = self.soup.find('audio').find('source')
-            if audio_link and audio_link.has_attr('src'):
-                media_url = audio_link['src']
+            audio = self.soup.find('audio')
+            if audio is not None:
+                audio_link = audio.find('source')
+                if audio_link and audio_link.has_attr('src'):
+                    media_url = audio_link['src']
         return media_url
