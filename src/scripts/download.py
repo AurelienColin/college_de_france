@@ -37,7 +37,7 @@ def main() -> None:
                 i1 += 1
                 previous_subfolder = subfolder
 
-            filename = f"{Config.DOWNLOAD_DIR}/{i0} - {folder}/{i1} - {subfolder}/{timestring} - {basename}"
+            filename = f"{Config.DOWNLOAD_DIR}/{i0} - {folder}/{i1} - {subfolder}/{timestring}"
             filename += ".webm" if "youtu.be" in medial_url else os.path.splitext(medial_url)[1]
             if not os.path.exists(filename):
                 to_download[medial_url] = filename
@@ -47,11 +47,8 @@ def main() -> None:
     for url, filename in to_download.items():
         logger(f"Attempt to download from `{url}`")
         os.makedirs(os.path.dirname(filename), exist_ok=True)
-        if "youtu.be" in url:
-            download_from_youtube(url, filename)
-        else:
-            continue
-            retry(download_file, url, filename)
+        downloader = download_from_youtube if ("youtu.be" in url or 'youtube' in url) else download_file
+        retry(downloader, url, filename)
         logger(f"\t OK -> `{filename}`")
 
 
