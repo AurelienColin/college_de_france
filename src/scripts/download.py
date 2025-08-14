@@ -4,6 +4,7 @@ from src.config import Config
 from rignak.src.logging_utils import logger
 from rignak.src.custom_requests.request_utils import download_file, download_from_youtube
 
+translator = str.maketrans('', '', ':"\\?*|><')
 
 def retry(f, *args, n: int = 5, **kwargs):
     for i in range(n):
@@ -32,13 +33,17 @@ def main() -> None:
         else:
             if folder != previous_folder:
                 i0 += 1
+                i1 = 0
                 previous_folder = folder
             if subfolder != previous_subfolder:
                 i1 += 1
                 previous_subfolder = subfolder
 
             filename = f"{Config.DOWNLOAD_DIR}/{i0} - {folder}/{i1} - {subfolder}/{timestring}"
-            filename += ".webm" if "youtu.be" in medial_url else os.path.splitext(medial_url)[1]
+            filename = filename.translate(translator)
+
+            filename += ".webm" if ("youtu.be" in medial_url or 'youtube' in medial_url) else \
+                os.path.splitext(medial_url)[1]
             if not os.path.exists(filename):
                 to_download[medial_url] = filename
     logger(f"Found {len(to_download)} media to download.")
