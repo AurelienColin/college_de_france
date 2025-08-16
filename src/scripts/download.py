@@ -31,6 +31,12 @@ def main() -> None:
         except ValueError:
             logger(f"Unable to parse `{line}`")
         else:
+            folder = folder.translate(translator).strip()
+            if folder.endswith('.'):
+                folder  =folder[:-1]
+            subfolder = subfolder.translate(translator).strip()
+            if subfolder.endswith('.'):
+                subfolder  =subfolder[:-1]
             if folder != previous_folder:
                 i0 += 1
                 i1 = 0
@@ -40,7 +46,6 @@ def main() -> None:
                 previous_subfolder = subfolder
 
             filename = f"{Config.DOWNLOAD_DIR}/{i0} - {folder}/{i1} - {subfolder}/{timestring}"
-            filename = filename.translate(translator)
 
             filename += ".webm" if ("youtu.be" in medial_url or 'youtube' in medial_url) else \
                 os.path.splitext(medial_url)[1]
