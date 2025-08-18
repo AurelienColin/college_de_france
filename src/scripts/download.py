@@ -6,6 +6,7 @@ from rignak.src.custom_requests.request_utils import download_file, download_fro
 
 translator = str.maketrans('', '', ':"\\?*|><')
 
+
 def retry(f, *args, n: int = 5, **kwargs):
     for i in range(n):
         try:
@@ -32,11 +33,11 @@ def main() -> None:
             logger(f"Unable to parse `{line}`")
         else:
             folder = folder.translate(translator).strip()
-            if folder.endswith('.'):
-                folder  =folder[:-1]
+            while folder.endswith('.'):
+                folder = folder[:-1]
             subfolder = subfolder.translate(translator).strip()
-            if subfolder.endswith('.'):
-                subfolder  =subfolder[:-1]
+            while subfolder.endswith('.'):
+                subfolder = subfolder[:-1]
             if folder != previous_folder:
                 i0 += 1
                 i1 = 0
