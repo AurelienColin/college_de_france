@@ -78,10 +78,13 @@ def main():
         print(f"  -> Generated Identifier: {identifier}")
 
         # 2. Check if this item already exists on the Internet Archive
-        item = internetarchive.get_item(identifier)
-        if item.exists:
-            print(f"  -> SKIPPING: Item already exists at https://archive.org/details/{identifier}")
-            continue
+        try:
+            item = internetarchive.get_item(identifier)
+            if item.exists:
+                print(f"  -> SKIPPING: Item already exists at https://archive.org/details/{identifier}")
+                continue
+        except Exception as e:
+            print(f" -> CRITICAL ERROR during item existence check for '{identifier}': {e}")
 
         # 3. Prepare metadata
         creator = get_teacher_name(folder_name)
@@ -139,8 +142,6 @@ def main():
 
         for old, new in files_to_upload.items():
             os.remove(new)
-
-        break
 
 if __name__ == "__main__":
     main()
