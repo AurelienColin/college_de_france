@@ -1,0 +1,19 @@
+.idea/
+.venv/
+__pycache__/
+*.py[cod]
+
+# Media files (local only)
+*.mp4
+*.mp4.part
+*.webm
+*.mp3
+*.mkv
+*.avi
+*.mov
+*.wav
+*.flac
+
+# Local data/resource files
+res/liste_des_cours.ods
+res/liste_des_cours.txt
